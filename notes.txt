@@ -1,0 +1,3 @@
+In nodeJS we create servers. Unlike php and jsp where apache handles it.
+
+Port numbers like doors into a computer which internet communication made for different programs.
