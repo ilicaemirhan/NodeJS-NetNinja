@@ -2,4 +2,12 @@ In nodeJS we create servers. Unlike php and jsp where apache handles it.
 
 Port numbers like doors into a computer which internet communication made for different programs.
 
-You can't do file operations with plain javascript but node makes it possible
+You can't do file operations with plain javascript but node makes it possible.
+
+Some Status Codes I should know about:
+        200 - OK
+        301 - Resource Moved
+        404 - Not Found
+        500 - Internal Server Error
+
+npm install <-- Use this to download added dependencies.
