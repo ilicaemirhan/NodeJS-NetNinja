@@ -21,3 +21,5 @@ EJS TAGS:
         <%% Outputs a literal '<%'
         %%> Outputs a literal '%>'
         %> Plain ending tag
+
+Middlewares works between server and requests. You can use them to increase security, as a logger etc.
