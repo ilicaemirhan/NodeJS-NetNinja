@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 const Blog = require("./models/blog");
+const { result } = require("lodash");
 //express app
 const app = express();
 
@@ -21,6 +22,10 @@ app.set("view engine", "ejs");
 
 //middleware & static files
 app.use(express.static("public"));//You cant use you static files (css etc) without making them available here public is the folder name we keep static files
+
+//middleware that comes with express to hande post requests. -- The extended: true part is not forced
+app.use(express.urlencoded({extended: true}));
+
 app.use(morgan("dev"));
 
 //mongoose and mongo route sanboxes
@@ -108,6 +113,28 @@ app.get("/blogs",(req,res)=>{
         })
         .catch((err) => console.log(err));
 });
+
+app.post("/blogs", (req,res)=>{
+
+    //we could just go const blog = new Blog(req.body);
+    const blog = new Blog({
+        title: req.body.title,
+        snippet: req.body.snippet,
+        body: req.body.body
+    });
+
+    blog.save()
+        .then((result)=> res.redirect("/blogs"))
+        .catch((err)=> console.log(err));
+});
+
+app.get("/blogs/:id",(req,res)=>{
+    const id = req.params.id.trim(); //because we called it id above
+    oID = new mongoose.Types.ObjectId(id);
+    Blog.findById(oID)
+        .then((result)=> res.render("details", {blogsParam: result, title: "Blog Details"}))
+        .catch((err)=>console.log("HELP ", err));
+})
 
 app.get("/blogs/create",function(req,res)
 {
