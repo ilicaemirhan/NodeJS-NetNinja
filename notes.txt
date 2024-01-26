@@ -23,3 +23,7 @@ EJS TAGS:
         %> Plain ending tag
 
 Middlewares works between server and requests. You can use them to increase security, as a logger etc.
+
+To keep app.js clean we can create route files like blogRoutes.js
+
+MVC(Model View Controller) is a way to structure our code & files.

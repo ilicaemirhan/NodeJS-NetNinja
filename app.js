@@ -1,13 +1,15 @@
 const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
-const Blog = require("./models/blog");
 const { result } = require("lodash");
+const blogRoutes = require("./routes/blogRoutes")
+
+
 //express app
 const app = express();
 
 //connect to mongo db - add db name prior to ?retryWrites!!
-const dbURI = "mongodb+srv://spartanranger:TiTbX2ykkPzEivWA@nodetutorial.bw3mfyd.mongodb.net/node-tut?retryWrites=true&w=majority"; 
+const dbURI = "<your mongodb link>"; 
 mongoose.connect(dbURI).then((result)=> {
     console.log("connected to db");
     app.listen(3000);
@@ -89,7 +91,7 @@ app.get("/index",(req,res) =>{
     res.redirect("blogs");
 
     //when working with view engine just render them.
-    res.render("index",{title: "Home", blogsParam : blogs});
+    //res.render("index",{title: "Home", blogsParam : Blog});
 });
 app.get("/about",(req,res) =>{
 
@@ -103,43 +105,8 @@ app.get("/about",(req,res) =>{
     res.render("about",{title: "About"});
 });
 
+app.use("/blogs",blogRoutes);
 
-//blog routes
-app.get("/blogs",(req,res)=>{
-    Blog.find()
-        .sort({createdAt: -1})
-        .then((result) =>{
-            res.render("index",{title: "All Blogs", blogsParam: result})
-        })
-        .catch((err) => console.log(err));
-});
-
-app.post("/blogs", (req,res)=>{
-
-    //we could just go const blog = new Blog(req.body);
-    const blog = new Blog({
-        title: req.body.title,
-        snippet: req.body.snippet,
-        body: req.body.body
-    });
-
-    blog.save()
-        .then((result)=> res.redirect("/blogs"))
-        .catch((err)=> console.log(err));
-});
-
-app.get("/blogs/:id",(req,res)=>{
-    const id = req.params.id.trim(); //because we called it id above
-    oID = new mongoose.Types.ObjectId(id);
-    Blog.findById(oID)
-        .then((result)=> res.render("details", {blogsParam: result, title: "Blog Details"}))
-        .catch((err)=>console.log("HELP ", err));
-})
-
-app.get("/blogs/create",function(req,res)
-{
-    res.render("create",{title: "Create blog"});
-});
 
 //404 page - works in sync so place it in the bottom of code
 app.use((req,res) =>{
